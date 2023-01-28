@@ -67,7 +67,7 @@ public class WhatsappRepository {
     }
 
     public int sendMessage(Message message, User sender, Group group) throws Exception {
-        if(!groupMessageMap.containsKey(group)) throw new Exception("Group does not exist.");
+        if(!groupUserMap.containsKey(group)) throw new Exception("Group does not exist.");
 
         List<User> users = groupUserMap.get(group);
         for (User user:users){
