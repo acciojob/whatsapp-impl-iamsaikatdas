@@ -80,25 +80,19 @@ public class WhatsappRepository {
     }
 
     public String changeAdmin(User approver, User user, Group group) throws Exception {
-        if(!groupUserMap.containsKey(group)){
-            throw new Exception("Group does not exist");
-        }
-        if(!adminMap.get(group).equals(approver)){
-            throw new Exception("Approver does not have rights");
-        }
-        boolean flag = false;
-        for(User u : groupUserMap.get(group)){
-            if(user.getMobile().equals(u.getMobile())){
-                flag = true;
-                break;
-            }
-        }
-        if(!flag){
-            throw new Exception("User is not a participant");
-        }
+        if (!groupUserMap.containsKey(group)) throw new Exception("Group does not exist");
+        if (!adminMap.get(group).equals(approver)) throw new Exception("Approver does not have rights");
+        if (!this.userExistsInGroup(group, user)) throw new Exception("User is not a participant");
+
         adminMap.put(group, user);
         return "SUCCESS";
     }
+        public boolean userExistsInGroup (Group group, User sender){
+            List<User> users = groupUserMap.get(group);
+            for (User user : users) {
+                if (user.equals(sender)) return true;
+            }
 
-
+            return false;
+        }
 }
