@@ -34,25 +34,30 @@ public class WhatsappRepository {
     }
 
     public Group createGroup(List<User> users)  {
-        if (users.size()==2){
-            Group group = new Group("Group: " + users.get(1).getName(), 2);
-            groupUserMap.put(group, users);
-            return group;
-        }
+        if (users.size()==2)
+            return createPersonalChat(users);
+
         customGroupCount++;
         Group group = new Group("Group: " + customGroupCount, users.size());
         groupUserMap.put(group, users);
         adminMap.put(group, users.get(0));
         return group;
     }
+    public Group createPersonalChat(List<User> users) {
+        String groupName = users.get(1).getName();
+        Group personalGroup = new Group(groupName, 2);
+        groupUserMap.put(personalGroup, users);
+        return personalGroup;
+    }
 
-    public void createUser(String name, String mobile)throws Exception {
-        if (userMobile.contains(mobile)){
-            throw new Exception("User already exits");
-        }
+    public boolean createUser(String name, String mobile)throws Exception {
+        if (userMobile.contains(mobile))
+            return false;
+
         userMobile.add(mobile);
         User user = new User(name, mobile);
         userMap.put(mobile, user);
+        return true;
     }
 
     public int createMessage(String content) {
