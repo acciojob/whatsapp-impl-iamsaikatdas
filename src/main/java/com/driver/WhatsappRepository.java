@@ -62,23 +62,17 @@ public class WhatsappRepository {
     }
 
     public int sendMessage(Message message, User sender, Group group) throws Exception {
-        if (!groupUserMap.containsKey(group)) {
-            throw new Exception("Group does not exits.");
+        if(!groupMessageMap.containsKey(group)) throw new Exception("Group does not exist.");
+
+        List<User> users = groupUserMap.get(group);
+        for (User user:users){
+            if (!user.equals(sender))
+                throw new Exception("You are not allowed to send message");
         }
-        boolean flag = false;
-        for (User user :
-                groupUserMap.get(group)) {
-            if (groupUserMap.equals(user.getMobile())) {
-                flag = true;
-                break;
-            }
-        }
-        if (flag == false) {
-            throw new Exception("You're not allowed to send message");
-        }
-        sendMap.put(message, sender);
+
         List<Message> msg = new ArrayList<>();
-        if (groupMessageMap.containsKey(group)) msg = groupMessageMap.get(group);
+        if (groupMessageMap.containsKey(group))
+            msg = groupMessageMap.get(group);
 
         msg.add(message);
         groupMessageMap.put(group, msg);
