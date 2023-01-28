@@ -38,7 +38,7 @@ public class WhatsappRepository {
             return createPersonalChat(users);
 
         customGroupCount++;
-        Group group = new Group("Group: " + customGroupCount, users.size());
+        Group group = new Group("Group " + customGroupCount, users.size());
         groupUserMap.put(group, users);
         adminMap.put(group, users.get(0));
         return group;
